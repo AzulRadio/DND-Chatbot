@@ -1,5 +1,7 @@
 import random
+import json
 
+'''
 dragon_dict = {'name':'dragon','ID':30334,
                'Str':(3,6,0), 'Dex':(3,6,0), 'Con':(3,6,0), 'Int':(3,6,0), 'Wis':(3,6,0), 'Cha':(3,6,0), 'Health':(5,8,0)}      # A dictionary that includes all attributes of dragon
                                                                                                                                 # The tuples corresponding to each key refer to the roll_dice parameters (num, sides, adjust)
@@ -9,8 +11,7 @@ goblin_dict = {'name':'goblin','ID':34589,
 
 Monster_dict = {30334: dragon_dict,
                 34589: goblin_dict}    # The one-full-dictionary containing all attributes of all monsters
-                                      # TO DO: make it a json file
-
+'''
 '''
 # unfinished
 # Parameter: ID unique to each kind of monster
@@ -25,6 +26,8 @@ def convert_id_to_attri(ID):
 #unfinished
 '''
 
+with open('Monsters.json', 'r') as f:
+    Monster_dict = json.load(f)
 
 
 class Monster:
@@ -64,7 +67,7 @@ def roll_dice(ndxpy):
 #Precondition: get attri_dict from Monster_dict
 #Postcondition: designated number of members of Class Monster will be spawn and Display To DM will be called
 def Spawn_Multi_Monsters(ID, num):
-    attri_dict = Monster_dict[ID]
+    attri_dict = Monster_dict[str(ID)]
     for i in range(num):
         name = attri_dict['name']+str(i+1)
         globals()[name] = Monster(attri_dict, name)
