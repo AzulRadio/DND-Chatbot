@@ -1,14 +1,10 @@
 import random
-import time
-
-
-
 
 dragon_dict = {'name':'dragon','ID':30334,
-               'Str':(3,6), 'Dex':(3,6), 'Con':(3,6), 'Int':(3,6), 'Wis':(3,6), 'Cha':(3,6), 'Health':(5,8)}      # A dictionary that includes all attributes of dragon
-                                                                                                                  # The tuples corresponding to each key refer to the roll_dice parameters
+               'Str':(3,6,0), 'Dex':(3,6,0), 'Con':(3,6,0), 'Int':(3,6,0), 'Wis':(3,6,0), 'Cha':(3,6,0), 'Health':(5,8,0)}      # A dictionary that includes all attributes of dragon
+                                                                                                                                # The tuples corresponding to each key refer to the roll_dice parameters (num, sides, adjust)
 goblin_dict = {'name':'goblin','ID':34589,
-               'Str':(3,6), 'Dex':(3,6), 'Con':(3,6), 'Int':(3,6), 'Wis':(3,6), 'Cha':(3,6), 'Health':(2,8)}
+               'Str':(3,6,0), 'Dex':(3,6,0), 'Con':(3,6,0), 'Int':(3,6,0), 'Wis':(3,6,0), 'Cha':(3,6,0), 'Health':(1,8,3)}
 
 
 Monster_dict = {30334: dragon_dict,
@@ -51,16 +47,16 @@ class Monster:
                "\nHealth = ",self.Health,"\n")
 
 #Func name:roll_dice()
-#Parameter: tuple with format (num, sides)
+#Parameter: tuple with format (num, sides, adjust)
 #Precondition:num and sides are positive integer
 #Postcondition: return the result
-def roll_dice(ndx):
-    n,x = ndx
+def roll_dice(ndxpy):
+    n,x,y = ndxpy
     sum = 0
     while (n >0):
         sum += random.randint(1,x)
         n -= 1
-    return sum
+    return sum + y
 
 
 #Func name:Spawn_Multi_Monsters
