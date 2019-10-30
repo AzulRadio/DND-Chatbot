@@ -1,10 +1,32 @@
 # DND Chatbot
-monsterspawn.py: A d&d monster spawner.
+
+This is a DND game bot under development, contributed by **Kevinskwk** and **AzulRadio**
+
+### Files:
+ - `monsterspawn.py`: A d&d monster spawner.
+ - `Athena.py`: A telegram bot that helps host DND game (under development)
+ - `Monsters.json`: A dictionary of data of different monsters
+ - `TOKEN.json`: json file that stores your telegram bot token (you need to **create one yourself!**)
+
+### How to use:
+ - Create a python virtual environment. In terminal, get into your virtual environment, and install the libraries required in `requirements.txt`
+     - For example, if you are using pip, do the following:
+        ```
+        $ python3 -m venv env
+        $ source env/bin/activate
+        $ pip install -r requirements.txt 
+        ```
+     - If you are using anaconda, do the following:
+        ```
+        $ conda create --name env --file requirements.txt 
+        ```
+ - Next, Create a json file, name it `TOKEN.json`. Then put your telegram bot token into it. Remember to put *double quotation marks* around the token!
+ - After you finish, run `Athena.py`, and your bot is running!
 
 ### To do:
- - Implement it in a telegram bot
- - Connect SQL with our programs
+ - fix the problem that spawned monsters cannot be saved
+ - Connect SQL with the telegram bot
  - Add hero-monster calculator (allow DM to input customized names)
- - die, live and respawn
+ - dead, alive and respawn
  - attack, exempt and AC
  - Make Monster a subclass of creature, which has subclass of Player, Monsters and other subclasses(like NPC)
