@@ -4,6 +4,7 @@ import logging
 import random
 import json
 from MonsterSpawn import *
+from sql_helper import *
 
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -11,11 +12,31 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 logger = logging.getLogger(__name__)
 
+# Get TOKEN from TOKEN.json
 with open('TOKEN.json','r') as f:
     TOKEN = json.load(f)
 
+# Get Monster_dict
 with open('Monsters.json', 'r') as f: 
     Monster_dict = json.load(f) 
+
+# Initiate sqlite database
+conn = create_connection('db.sqlite')
+
+# create monster table
+create_table(conn, """Monsters (
+                               ID integer PRIMARY KEY,
+                               name text NOT NULL,
+                               Monster_id integer NOT NULL,
+                               Str integer NOT NULL,
+                               Dex integer NOT NULL,
+                               Con integer NOT NULL,
+                               Int integer NOT NULL,
+                               Wis integer NOT NULL,
+                               Cha integer NOT NULL,
+                               HP integer NOT NULL
+                            );""")
+
 
 updater = Updater(token=TOKEN, use_context=True)
 dispatcher = updater.dispatcher
@@ -24,7 +45,11 @@ j = updater.job_queue
 
 def start(update, context):
     context.bot.send_message(chat_id=update.message.chat_id,
-    text="Hi! I'm Athena, a DND game bot under development!\n You can use /1D + your_number to roll a dice with range 1 to you_number!\n Use /d to roll multiple dice!\n")
+    text='''Hi! I'm Athena, a DND game bot under development!\n 
+            You can use /1D + your_number to roll a dice with range 1 to you_number!\n 
+            Use /d to roll multiple dice!\n
+            Use /spawn + monster ID, number to spawn monsters!\n
+            Use /sudo_info + monster name to get monster info!''')
 
 start_handler = CommandHandler('start', start)
 dispatcher.add_handler(start_handler)
@@ -34,34 +59,38 @@ def spawn(update, context):
     try:
         text = ' '.join(context.args).upper()
         arg = text.split(",")
-        ID = int(arg[0])
+        Monster_id = int(arg[0])
         try:
             num = int(arg[1])
         except:
             num = 1
-        
-        name = Spawn_Monsters(ID, num)
+        conn = create_connection('db.sqlite')
+        count = monster_count(conn, Monster_id)
+        results = Spawn_Monsters(Monster_id, count, num)
 
-        context.bot.send_message(chat_id=update.effective_chat.id, text="Spawned {0} x {1}!".format(name,num))
+        for i in results:
+            create_monster(conn, i)
+            context.bot.send_message(chat_id=update.effective_chat.id, text="Spawned {0}!".format(i[0]))
     except:
         context.bot.send_message(chat_id=update.effective_chat.id, text="Error, please try again.")
 
 spawn_handler = CommandHandler('spawn', spawn)
 dispatcher.add_handler(spawn_handler)
 
-'''
+
 def sudo_info(update, context):
     try:
+        conn = create_connection('db.sqlite')
         text = ' '.join(context.args)
-        info = globals()[text].display_to_dm()
+        info = monster_info(conn, text)
 
-        context.bot.send_message(chat_id=update.effective_chat.id, text=info)
+        context.bot.send_message(chat_id=update.effective_chat.id, text=str(info))
     except:
         context.bot.send_message(chat_id=update.effective_chat.id, text="Error, please try again.")
 
 sudo_info_handler = CommandHandler('sudo_info', sudo_info)
 dispatcher.add_handler(sudo_info_handler)
-'''
+
 
 def D(update, context):
     try:
