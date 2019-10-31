@@ -60,19 +60,45 @@ def monster_info(conn, monster):
         cur.execute(stmt, (monster,))
         conn.commit()
         rows = cur.fetchall()
-        info=''
+        info={}
         for row in rows:
-            info+=str(dict(row))
+            info.update(dict(row))
         return info
     except Error as e:
         print(e)
 
 def monster_count(conn,Monster_id):
+    """
+    return number of same monster
+    :param conn:
+    :param Monster_id:
+    :return: monster number
+    """
     try:
         cur = conn.cursor()
         stmt = "SELECT COUNT(*) FROM Monsters WHERE Monster_id=?"
         cur.execute(stmt, (Monster_id,))
         conn.commit()
         return cur.fetchall()[0][0]
+    except Error as e:
+        print(e)
+
+
+def update_monster(conn,name,column,new_value,table="Monsters"):
+    """
+    update monster info
+    :param conn:
+    :param name:
+    :param column:
+    :param new_value:
+    :return: monster update log
+    """
+    try:
+        cur = conn.cursor()
+        ID = monster_info(conn,name)['ID']
+        stmt = 'UPDATE {} SET {} = \'{}\' WHERE ID = {}'.format(table,column,new_value,ID)
+        cur.execute(stmt)
+        conn.commit()
+        return "Updated successfully!"
     except Error as e:
         print(e)

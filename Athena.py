@@ -26,7 +26,7 @@ conn = create_connection('db.sqlite')
 # create monster table
 create_table(conn, """Monsters (
                                ID integer PRIMARY KEY,
-                               name text NOT NULL,
+                               name text NOT NULL UNIQUE,
                                Monster_id integer NOT NULL,
                                Str integer NOT NULL,
                                Dex integer NOT NULL,
@@ -77,6 +77,22 @@ def spawn(update, context):
 spawn_handler = CommandHandler('spawn', spawn)
 dispatcher.add_handler(spawn_handler)
 
+
+def rename(update, context):
+    try:
+        text = ' '.join(context.args)
+        arg = text.split(' ')
+        monster_name = str(arg[0])
+        new_name = str(arg[1])
+        conn = create_connection('db.sqlite')
+        log = update_monster(conn,monster_name,"name",new_name)
+        context.bot.send_message(chat_id=update.effective_chat.id, text=log)
+
+    except:
+        context.bot.send_message(chat_id=update.effective_chat.id, text="Error, please try again.")
+
+rename_handler = CommandHandler('rename', rename)
+dispatcher.add_handler(rename_handler)        
 
 def sudo_info(update, context):
     try:
