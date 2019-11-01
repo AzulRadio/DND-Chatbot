@@ -70,23 +70,8 @@ class Monster:
     def show_HP(self):
         print("%s, HP = %d\n" %(self.name, self.HP))
 
-    def check_adv_dis(self, state):
-        if (state == "adv"):
-            check1 = random.randint(1,20)
-            check2 = random.randint(1,20)
-            check = max(check1, check2)
-            print("Adv in checking : %d, %d. result : %d"%(check1,check2,check))
-        elif (state == "dis"):
-            check1 = random.randint(1,20)
-            check2 = random.randint(1,20)
-            check = min(check1, check2)
-            print("Disadv in checking : %d, %d. result : %d"%(check1,check2,check))
-        else:
-            check = random.randint(1,20)
-        return check
-
     def check(self, abili, state = 0):
-        check = self.check_adv_dis(state)
+        check = check_adv_dis(state)
         if check == 20:
             print("Check {0} {1} = Natural 20\n".format(self.name, abili))
             return 
@@ -116,7 +101,7 @@ class Monster:
             damage = 0
             hit_bonus, dice_num, dice_surfaces, fixed_damage = abiliscore_dict['attack'+str(i)]
             i+=1
-            attack_check = self.check_adv_dis(state)
+            attack_check = check_adv_dis(state)
             if(attack_check == 20):
                 print("Attack check by {0} on {1} = Natural 20\n".format(self.name, ""))
                 damage = dice_num * dice_surfaces + fixed_damage
@@ -154,6 +139,20 @@ def roll_dice(ndxpy):
         n -= 1
     return sum + y
 
+def check_adv_dis(state):
+        if (state == "adv"):
+            check1 = random.randint(1,20)
+            check2 = random.randint(1,20)
+            check = max(check1, check2)
+            print("Adv in checking : %d, %d. result : %d"%(check1,check2,check))
+        elif (state == "dis"):
+            check1 = random.randint(1,20)
+            check2 = random.randint(1,20)
+            check = min(check1, check2)
+            print("Disadv in checking : %d, %d. result : %d"%(check1,check2,check))
+        else:
+            check = random.randint(1,20)
+        return check
     
 
 def calc_score_modifier(abili_score):
@@ -184,5 +183,5 @@ dragon1.check('Str', 'adv')
 dragon1.live = 0
 print(dragon1.live)
 dragon2.attack()
-'''
 
+'''
