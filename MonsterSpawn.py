@@ -38,12 +38,12 @@ class Monster:
     def __init__(self, abiliscore_dict, name, ID=0, Str=0, Dex=0 , Con=0, Int=0, Wis=0, Cha=0, HP=0):
         self.name = name
         self.ID = abiliscore_dict ['ID']
-        self.Str = calc_score_modifier( roll_dice( abiliscore_dict['Str'] ) )
-        self.Dex = calc_score_modifier( roll_dice( abiliscore_dict['Dex'] ) )
-        self.Con = calc_score_modifier( roll_dice( abiliscore_dict['Con'] ) )
-        self.Int = calc_score_modifier( roll_dice( abiliscore_dict['Int'] ) )
-        self.Wis = calc_score_modifier( roll_dice( abiliscore_dict['Wis'] ) )
-        self.Cha = calc_score_modifier( roll_dice( abiliscore_dict['Cha'] ) )
+        self.Str = roll_dice( abiliscore_dict['Str'] ) 
+        self.Dex = roll_dice( abiliscore_dict['Dex'] ) 
+        self.Con = roll_dice( abiliscore_dict['Con'] ) 
+        self.Int = roll_dice( abiliscore_dict['Int'] ) 
+        self.Wis = roll_dice( abiliscore_dict['Wis'] ) 
+        self.Cha = roll_dice( abiliscore_dict['Cha'] ) 
         self.HP = roll_dice(abiliscore_dict['HP'])
         self.alive = True
 
@@ -53,6 +53,9 @@ class Monster:
                 "\nCon = ",self.Con,"\nInt = ",self.Int,
                 "\nWis = ",self.Wis,"\nCha = ",self.Cha,
                 "\nHP = ",self.HP,"\n")
+
+    def get_tuple(self):
+        return (self.name,self.ID,self.Str,self.Dex,self.Con,self.Int,self.Wis,self.Cha,self.HP)
 
     def display_to_player(self):
         print("name = %s\n"%(self.name))
@@ -164,12 +167,15 @@ def calc_score_modifier(abili_score):
 #Parameter: unique ID and number of monsters
 #Precondition: get attri_dict from Monster_dict
 #Postcondition: designated number of members of Class Monster will be spawn and Display To DM will be called
-def Spawn_Monsters(ID, num = 1):
+def Spawn_Monsters(ID, start_count, num = 1,):
     abiliscore_dict = Monster_dict[ID]
+    results=[]
+    
     for i in range(num):
-        name = abiliscore_dict['name']+str(i+1)
+        name = abiliscore_dict['name']+str(start_count+i+1)
         globals()[name] = Monster(abiliscore_dict, name)
-    return abiliscore_dict['name']
+        results.append(globals()[name].get_tuple())
+    return results
 #        globals()[name].display_to_dm()
 
 #************* test code below ****************#
