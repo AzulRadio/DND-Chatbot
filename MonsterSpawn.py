@@ -117,14 +117,7 @@ class Monster:
                         #Now the damage produced by this function can't be taken by another object
                 #Todo: use heal_or_damage() to put damage on another object
                 
-    def designate_target(self, target_total , target_designated = 0):
-        if(target_designated > 0):
-            print("Designate target %d\n"%(target_designated))
-            target = target_designated
-        else:
-            target = random.randint(1,target_total)
-            print("Designate target %d\n"%(target))
-        return target
+
             
             
 #Func name: roll_dice()
@@ -154,6 +147,14 @@ def check_adv_dis(state):
             check = random.randint(1,20)
         return check
     
+def designate_target(self, target_total , target_designated = 0):
+    if(target_designated > 0):
+        print("Designate target %d\n"%(target_designated))
+        target = target_designated
+    else:
+        target = random.randint(1,target_total)
+        print("Designate target %d\n"%(target))
+    return target
 
 def calc_score_modifier(abili_score):
     return (abili_score-10)//2
