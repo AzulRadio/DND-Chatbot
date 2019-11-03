@@ -9,7 +9,8 @@ This is a DND game bot under development, contributed by **Kevinskwk** and **Azu
  - `TOKEN.json`: json file that stores your telegram bot token (you need to **create one yourself!**)
 
 ### How to use:
- - Create a python virtual environment. In terminal, get into your virtual environment, and install the libraries required in `requirements.txt`
+ - Install the libraries required in `requirements.txt`
+ - If you want to use python virtual environment. In terminal, get into your virtual environment, and then install the libraries required in `requirements.txt`
      - For example, if you are using pip, do the following:
         ```
         $ python3 -m venv env
@@ -20,12 +21,15 @@ This is a DND game bot under development, contributed by **Kevinskwk** and **Azu
         ```
         $ conda create --name env --file requirements.txt 
         ```
- - Next, Create a json file, name it `TOKEN.json`. Then put your telegram bot token into it. Remember to put *double quotation marks* around the token!
+     - For more usage of virtual environment, check [this](https://github.com/Kevinskwk/Coding-Note/blob/master/Python/Packages_and_Environments.md)
+ - Next, Create a json file, name it `TOKEN.json`. Then put your telegram bot token into it. Remember to put **double quotation marks** around the token!
+ - Then, make sure that your computer has sqlite3 installed. To do this, run the following command in the terminal:
+    ```
+    $ sudo apt-get install sqlite3
+    ```
  - After you finish, run `Athena.py`, and your bot is running!
 
 ### To do:
- - fix the problem that spawned monsters cannot be saved
- - Connect SQL with the telegram bot
  - Add hero-monster calculator (allow DM to input customized names)
  - dead, alive and respawn
  - attack, exempt and AC
